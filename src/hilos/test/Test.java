@@ -11,9 +11,9 @@ public class Test {
         ProcesoC c = new ProcesoC(10);
 
         // Inicializar el Hilo
-
-        c.start();
         a.start();
         b.start();
+        c.start();
+
     }
 }

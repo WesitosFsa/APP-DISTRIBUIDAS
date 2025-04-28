@@ -6,7 +6,7 @@ public class ProcesoA extends Thread{
 
     private String Name;
 
-    public ProcesoA(String name) {
+    public ProcesoA(String Name) {
         this.Name = Name;
     }
 
