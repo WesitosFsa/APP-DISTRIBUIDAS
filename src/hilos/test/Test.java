@@ -10,12 +10,15 @@ public class Test {
         ProcesoA a = new ProcesoA("wesitos");
         ProcesoB b = new ProcesoB(5);
         ProcesoC c = new ProcesoC(10);
-        ProcesoD d = new ProcesoD();
+        Runnable x = new ProcesoD(100);
+        Thread d = new Thread(x);
+        // Paralelismo y Concurrencia Thread and runnable wtf
 
         // Inicializar el Hilo
         a.start();
         b.start();
         c.start();
+        //
         d.start();
 
     }
