@@ -9,7 +9,7 @@ public class ProcesoC extends Thread {
     }
 
     public void dividir(int n){
-        for (int i = 10; i > -1; i--) {
+        for (int i = 10; i > 1; i--) {
             System.out.println(n/i);
 
         }
