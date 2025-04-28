@@ -9,9 +9,17 @@ public class ProcesoB extends Thread{
     }
 
     public void contar(int n){
-        for (int i = 1; i < n; i++) {
-            System.out.println("Numero en itteraccion " +i);
+        try {
+            for (int i = 1; i < n; i++) {
+                sleep(1000);
+                System.out.println("Numero en itteraccion " +i);
+            }
+
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     @Override

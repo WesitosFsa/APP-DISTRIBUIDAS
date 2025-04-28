@@ -1,17 +1,22 @@
 package hilos.test;
 
-import hilos.clase.ProcesoA;
-import hilos.clase.ProcesoB;
-import hilos.clase.ProcesoC;
-import hilos.clase.ProcesoD;
+import hilos.clase.*;
 
 public class Test {
     public static void main(String[] args) {
+        Persona p= new Persona();
+        p.setNombre("Wesitos");
+        p.setDireccion("Sopa de camaron");
+        p.setFechaNacimiento("2003");
+        /*
         ProcesoA a = new ProcesoA("wesitos");
-        ProcesoB b = new ProcesoB(5);
+        ProcesoB b = new ProcesoB(100);
         ProcesoC c = new ProcesoC(10);
         Runnable x = new ProcesoD(100);
+        Runnable x2 = new ProcesoE("Hola como esta ?");
+
         Thread d = new Thread(x);
+        Thread e = new Thread(x2);
         // Paralelismo y Concurrencia Thread and runnable wtf
 
         // Inicializar el Hilo
@@ -20,6 +25,13 @@ public class Test {
         c.start();
         //
         d.start();
+        e.start();
+
+         */
+        System.out.println("Nombre: " + p.getNombre());
+        System.out.println("Direccion: " + p.getDireccion());
+        System.out.println("Fecha Nacimiento: " + p.getFechaNacimiento());
+
 
     }
 }
