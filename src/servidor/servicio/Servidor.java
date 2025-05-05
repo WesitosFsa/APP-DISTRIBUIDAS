@@ -23,15 +23,17 @@ public class Servidor {
 
                 // Procesar el mensaje
                 String[] numeros = mensajeRecibido.split(",");
+                int caso = 1;
                 if (numeros.length == 2) {
                     try {
                         int num1 = Integer.parseInt(numeros[0].trim());
                         int num2 = Integer.parseInt(numeros[1].trim());
                         int suma = num1 + num2;
-
+                        int resta = num1 - num2;
+                        int multiplicaion = num1 * num2;
+                        int division = num1 / num2 ;
                         String respuesta = "Suma: " + suma;
                         byte[] bufferSalida = respuesta.getBytes();
-
                         // Enviar respuesta al cliente
                         DatagramPacket paqueteSalida = new DatagramPacket(
                                 bufferSalida,
