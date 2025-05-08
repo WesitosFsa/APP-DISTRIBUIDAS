@@ -1,56 +1,42 @@
 package servidor.servicio;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-
 public class Servidor {
-
-    public void servicio(){
-
+    public void servicio() {
         int puerto = 5000;
         try {
-            DatagramSocket socket = new DatagramSocket(puerto); //Crear el datagram
+            DatagramSocket socket = new DatagramSocket(puerto);
             System.out.println("Servidor UDP corriendo en el puerto " + puerto + "...");
-
-            byte[] bufferEntrada = new byte[1024]; //convertir el mensaje a cadena de bytes
+            byte[] bufferEntrada = new byte[1024];
             while (true) {
-                // Recibir datos del cliente
                 DatagramPacket paqueteEntrada = new DatagramPacket(bufferEntrada, bufferEntrada.length);
                 socket.receive(paqueteEntrada);
-
-                String mensajeRecibido = new String(paqueteEntrada.getData(), 0, paqueteEntrada.getLength());
-                System.out.println("Mensaje recibido: " + mensajeRecibido);
-
-                // Procesar el mensaje
-                String[] numeros = mensajeRecibido.split(",");
-                int caso = 1;
-                if (numeros.length == 2) {
-                    try {
-                        int num1 = Integer.parseInt(numeros[0].trim());
-                        int num2 = Integer.parseInt(numeros[1].trim());
-                        int suma = num1 + num2;
-                        int resta = num1 - num2;
-                        int multiplicaion = num1 * num2;
-                        int division = num1 / num2 ;
-                        String respuesta = "Suma: " + suma;
-                        byte[] bufferSalida = respuesta.getBytes();
-                        // Enviar respuesta al cliente
-                        DatagramPacket paqueteSalida = new DatagramPacket(
-                                bufferSalida,
-                                bufferSalida.length,
-                                paqueteEntrada.getAddress(),
-                                paqueteEntrada.getPort()
-                        );
-                        socket.send(paqueteSalida);
-                        System.out.println("Respuesta enviada: " + respuesta);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Error al convertir los números.");
-                    }
+                String mensaje = new String(paqueteEntrada.getData(), 0, paqueteEntrada.getLength());
+                System.out.println("Mensaje recibido: " + mensaje);
+                String[] partes = mensaje.split(",");
+                if (partes.length == 3) {
+                    int num1 = Integer.parseInt(partes[0].trim());
+                    int num2 = Integer.parseInt(partes[1].trim());
+                    String operacion = partes[2].trim();
+                    String respuesta = switch (operacion) {
+                        case "+" -> "Resultado: " + (num1 + num2);
+                        case "-" -> "Resultado: " + (num1 - num2);
+                        case "*" -> "Resultado: " + (num1 * num2);
+                        case "/" -> num2 != 0
+                                ? "Resultado: " + ((double) num1 / num2)
+                                : "Error: División por cero";
+                        default -> "Operación no válida";
+                    };
+                    byte[] bufferSalida = respuesta.getBytes();
+                    DatagramPacket paqueteSalida = new DatagramPacket(
+                            bufferSalida, bufferSalida.length,
+                            paqueteEntrada.getAddress(), paqueteEntrada.getPort());
+                    socket.send(paqueteSalida);
+                    System.out.println("Respuesta enviada: " + respuesta);
                 } else {
-                    System.out.println("Formato de mensaje incorrecto.");
+                    System.out.println("Errorn");
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
