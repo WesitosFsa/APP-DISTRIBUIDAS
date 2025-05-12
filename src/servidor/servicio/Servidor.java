@@ -3,7 +3,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 public class Servidor {
     public void servicio() {
-        int puerto = 5000;
+        int puerto = 4005;
         try {
             DatagramSocket socket = new DatagramSocket(puerto);
             System.out.println("Servidor UDP corriendo en el puerto " + puerto + "...");

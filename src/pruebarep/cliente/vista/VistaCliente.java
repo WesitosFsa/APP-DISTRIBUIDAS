@@ -7,80 +7,52 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VistaCliente extends JFrame {
-
-    private JTextField campoId, campoNombre, campoCedula, campoEdad, campoRespuesta;
-
     public VistaCliente() {
-        setTitle("Gestión de Personas");
-        setSize(400, 300);
+        setTitle("Aplicacion Cliente");
+        setSize(300, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(7, 2, 10, 10));
+        setLayout(new GridLayout(2, 1, 10, 10));
+        JTextField input = new JTextField();
+        JLabel resId = new JLabel();
+        JLabel resNombre = new JLabel();
+        JLabel resTelefono = new JLabel();
+        JLabel resCarrera = new JLabel();
+        JLabel resSemestre = new JLabel();
+        JLabel resGratuidad = new JLabel();
 
-        // Crear campos
-        campoId = new JTextField();
-        campoNombre = new JTextField();
-        campoCedula = new JTextField();
-        campoEdad = new JTextField();
-        campoRespuesta = new JTextField();
-        campoRespuesta.setEditable(false);
+        JButton botonbuscar = new JButton("Buscar");
 
-        JButton btnCrear = new JButton("Crear");
-        JButton btnBuscar = new JButton("Buscar");
-        JButton btnEditar = new JButton("Editar");
 
-        // Agregar componentes
-        add(new JLabel("ID:"));
-        add(campoId);
-        add(new JLabel("Nombre:"));
-        add(campoNombre);
-        add(new JLabel("Cédula:"));
-        add(campoCedula);
-        add(new JLabel("Edad:"));
-        add(campoEdad);
-        add(new JLabel("Respuesta:"));
-        add(campoRespuesta);
-        add(btnCrear);
-        add(btnBuscar);
-        add(btnEditar);
+        add(input);
+        add(botonbuscar);
+        add(resId);
+        add(resNombre);
+        add(resTelefono);
+        add(resCarrera);
+        add(resSemestre);
+        add(resGratuidad);
 
-        // Cliente para enviar peticiones
-        Cliente cliente = new Cliente();
-        String ipServidor = "127.0.0.1"; // cambia si estás en red
-        int puerto = 5000;
 
-        // Acciones
-        btnCrear.addActionListener(e -> {
-            String id = campoId.getText();
-            String nombre = campoNombre.getText();
-            String cedula = campoCedula.getText();
-            String edad = campoEdad.getText();
-
-            String mensaje = "crear," + id + "," + nombre + "," + cedula + "," + edad;
-            String respuesta = cliente.enviarPeticion(ipServidor, puerto, mensaje);
-            campoRespuesta.setText(respuesta);
-        });
-
-        btnBuscar.addActionListener(e -> {
-            String id = campoId.getText();
-            String mensaje = "buscar," + id;
-            String respuesta = cliente.enviarPeticion(ipServidor, puerto, mensaje);
-            campoRespuesta.setText(respuesta);
-        });
-
-        btnEditar.addActionListener(e -> {
-            String id = campoId.getText();
-            String nombre = campoNombre.getText();
-            String cedula = campoCedula.getText();
-            String edad = campoEdad.getText();
-
-            String mensaje = "editar," + id + "," + nombre + "," + cedula + "," + edad;
-            String respuesta = cliente.enviarPeticion(ipServidor, puerto, mensaje);
-            campoRespuesta.setText(respuesta);
-        });
+        botonbuscar.addActionListener(e -> consultarServidor(resId,resNombre,resTelefono,resCarrera,resSemestre,resGratuidad,input));
     }
 
-    public static void main(String[] args) {
-        new VistaCliente().setVisible(true);
+    private void consultarServidor(JLabel resId, JLabel resNombre,JLabel resTelefono, JLabel resCarrera, JLabel resSemestre, JLabel resGratuidad, JTextField input) {
+        try {
+            String id = String.valueOf(input.getText());
+
+            Cliente c = new Cliente();
+            String respuesta = c.consultarEstudiante("172.31.116.65", 4005, id);
+            resId.setText(respuesta);
+            resNombre.setText(respuesta);
+            resTelefono.setText(respuesta);
+            resCarrera.setText(respuesta);
+            resSemestre.setText(respuesta);
+            resGratuidad.setText(respuesta);
+
+        } catch (NumberFormatException e) {
+            resId.setText("Error al recibir datos");
+        }
     }
+
 }

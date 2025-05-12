@@ -1,26 +1,33 @@
 package pruebarep.cliente.servicio;
 
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
 public class Cliente {
-    public String enviarPeticion(String ip, int puerto, String mensaje) {
-        try (DatagramSocket socket = new DatagramSocket()) {
-            InetAddress direccion = InetAddress.getByName(ip);
-            byte[] datos = mensaje.getBytes();
-            DatagramPacket paquete = new DatagramPacket(datos, datos.length, direccion, puerto);
-            socket.send(paquete);
+    public String consultarEstudiante(String IP, int puerto, String id) {
+        try {
+            DatagramSocket socket = new DatagramSocket();
+            InetAddress direccionIpServidor = InetAddress.getByName(IP);
 
-            byte[] bufferRespuesta = new byte[1024];
-            DatagramPacket respuesta = new DatagramPacket(bufferRespuesta, bufferRespuesta.length);
-            socket.receive(respuesta);
+            String mensajeSalida = id;
+            byte[] bufferSalida = mensajeSalida.getBytes();
 
-            return new String(respuesta.getData(), 0, respuesta.getLength());
+            DatagramPacket paqueteSalida = new DatagramPacket(bufferSalida, bufferSalida.length, direccionIpServidor, puerto);
+            socket.send(paqueteSalida);
+
+
+            byte[] bufferEntrada = new byte[1024];
+            DatagramPacket paqueteEntrada = new DatagramPacket(bufferEntrada, bufferEntrada.length);
+            socket.receive(paqueteEntrada);
+
+            String respuestaServidor = new String(paqueteEntrada.getData(), 0, paqueteEntrada.getLength());
+
+            socket.close();
+            return respuestaServidor;
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error al conectar";
+            return "Errorn";
         }
     }
 }
